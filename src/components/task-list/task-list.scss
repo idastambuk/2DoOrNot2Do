@@ -1,0 +1,29 @@
+.task-list-container {
+  padding: 50px;
+}
+
+.list-actions {
+  display: flex;
+}
+.task-column-container {
+  display: flex;
+  justify-content: center;
+  .column-title {
+    text-transform: uppercase;
+    color: $theme-primary;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .task-column {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    background-color: $theme-secondary;
+    margin: 30px;
+    border-radius: 5px;
+    width: 50%;
+    position: relative;
+  }
+}
+

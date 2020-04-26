@@ -1,0 +1,24 @@
+.login-container {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  width: 100%;
+  .avatar {
+    margin: 20px;
+    background-color: $theme-accent;
+  }
+  p.sign-up {
+    color: $theme-primary;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  p.auth-error {
+    color: $theme-error;
+    font-size: 10px;
+  }
+}
+

@@ -1,0 +1,38 @@
+.task-details-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 450px;
+  height: fit-content;
+  margin: 0 auto;
+  background: $theme-secondary;
+  padding-top: 20px;
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    svg {
+      fill: $theme-accent;
+      width: 1.5em;
+      height: 1.5em;
+      margin: 0 10px;
+    }
+  }
+  .task-details {
+    padding: 20px;
+    .title {
+      font-size: 22px;
+      text-align: center;
+    }
+    .task {
+      .label {
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      .item {
+        margin-left: 20px;
+        word-break: break-all;
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+.loader {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: $theme-accent;
+}
+.add-button {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  background-color: coral;
+  box-shadow: none;
+  border: none;
+  font-size: 37px;
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  &::after {
+    content: '+'
+  }
+}
+.theme-button {
+  color: $theme-primary;
+  background-color: $theme-accent;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 20px;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 30px;;
+  &:hover {
+    background-color: $theme-secondary;
+    cursor: pointer;
+  }
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}

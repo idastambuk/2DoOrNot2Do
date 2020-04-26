@@ -1,0 +1,22 @@
+.filter-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 20px;
+}
+.sort-icon {
+  width: 20px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.filter-element {
+  font-weight: bold;
+  margin: 0 15px;
+  * {
+    color: $theme-primary;
+  }
+}
