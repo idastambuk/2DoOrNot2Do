@@ -1,5 +1,17 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+To run the app, clone the project into a directory, run npm install, then npm start. OR, visit https://doornot2do-15b37.web.app/ to see the Firebase-hosted app. 
+
+ToDos in the project: 
+
+1. Pagination. However, the Firebase database needs to have an overhaul: Currently, "done" and "to do" tasks are within one single list. In order to do "firebase-side" pagination, the tasks need to be divided in the database into "done" and "to do" sections. 
+2. Tests
+3. Drag&drop functionality for tasks, instead of button to complete/uncomplete
+4. Tooltips for buttons
+5. API, one day, hopefully.
+
+etc.
+
 ## Available Scripts
 
 In the project directory, you can run:
