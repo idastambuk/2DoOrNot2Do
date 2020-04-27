@@ -9,7 +9,7 @@ import {ArrowBack} from "@material-ui/icons";
 
 interface IProps {
   route: () => void;
-  signUp: () => void;
+  signUp: (cred: ICredentials) => void;
   logIn: (cred: ICredentials) => void;
   isAuthLoading: boolean;
   isTasksLoading: boolean;
@@ -28,7 +28,9 @@ class LandingPageInner extends React.Component<IProps, IState> {
   render() {
     return (
         <>
+          {this.state.isSignUp &&
           <header><ArrowBack onClick={() => this.toggleSignUp()}/></header>
+          }
           {(this.props.isAuthLoading || this.props.isTasksLoading) &&
           <div className="loader"><CircularProgress color="inherit"/></div>}
           <LoginComponent

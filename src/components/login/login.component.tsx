@@ -1,8 +1,7 @@
 import React from "react";
 import {ICredentials} from "../../store/authentication/authentication.saga";
-import {Avatar, Button, Container, CssBaseline, Grid, Link, TextField, Typography} from "@material-ui/core";
+import {Avatar, Container, CssBaseline, Grid, TextField, Typography} from "@material-ui/core";
 import {LockOutlined} from "@material-ui/icons";
-import {signUpAction} from "../../store/authentication/authentication.actions";
 
 interface IProps {
   isSignUp: boolean;

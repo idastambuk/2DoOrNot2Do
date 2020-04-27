@@ -5,10 +5,28 @@
     margin: 0 10px;
   }
 }
-.makeStyles-paper-242, .makeStyles-paper-352 {
-  background-color: $theme-secondary!important;
+[class*="makeStyles-paper-"] {
+  background: $theme-secondary!important;
   border: none!important;
   width: 400px;
   height: 400px;
   border-radius: 5px;
 }
+.confirmation-modal {
+  [class*="makeStyles-paper-"] {
+    background: $theme-secondary!important;
+    border: none!important;
+    width: 220px;
+    height: 124px;
+    border-radius: 5px;
+  }
+}
+
+[class*="MuiPickersBasePicker-container-"] {
+    background: $theme-secondary;
+  }
+
+  [class*="MuiPickersCalendarHeader-iconButton-"] {
+      background-color: $theme-accent!important;
+  }
+

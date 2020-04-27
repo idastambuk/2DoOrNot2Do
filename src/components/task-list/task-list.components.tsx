@@ -4,6 +4,7 @@ import {Button} from "@material-ui/core";
 import {TaskComponent} from "./task/task.component";
 import {TaskFilterComponent} from "./task-filter/task-filter.component";
 import {TaskFilters} from "../../models/task-filters";
+import TransitionsModal from "../modal/modal.component";
 
 interface IProps {
   completedTasks: ITask[];
@@ -18,11 +19,13 @@ interface IProps {
 
 interface IState {
   selectedTaskIds: string[];
+  isConfirmationModalVisible: boolean;
 }
 
 export class TaskListComponent extends React.Component<IProps, IState> {
   public state: IState = {
-    selectedTaskIds: []
+    selectedTaskIds: [],
+    isConfirmationModalVisible: false
   }
 
   render() {
@@ -31,7 +34,7 @@ export class TaskListComponent extends React.Component<IProps, IState> {
           <div className="list-actions">
             <TaskFilterComponent activeFilters={this.props.activeFilters}
                                  onChangeFilters={this.props.onChangeTaskFilters}/>
-            <button className="theme-button" onClick={() => this.props.onDelete(this.state.selectedTaskIds)}
+            <button className="theme-button" onClick={() => this.openConfirmationModal()}
                     disabled={this.state.selectedTaskIds.length === 0}>Delete selected
             </button>
           </div>
@@ -50,6 +53,13 @@ export class TaskListComponent extends React.Component<IProps, IState> {
               </div>
             </div>
           </div>
+          <TransitionsModal isOpen={this.state.isConfirmationModalVisible}
+                            optionalClass="confirmation-modal"
+                            onClose={() => this.closeConfirmationModal()}>
+            <p>Delete items?</p>
+            <Button onClick={() => this.closeConfirmationModal()}>Cancel</Button>
+            <Button onClick={() => this.deleteTasks()}>Delete</Button>
+          </TransitionsModal>
         </div>
     )
   }
@@ -76,4 +86,17 @@ export class TaskListComponent extends React.Component<IProps, IState> {
     }
     this.setState({selectedTaskIds: newIds})
   }
+
+  private deleteTasks() {
+    this.props.onDelete(this.state.selectedTaskIds);
+    this.setState({selectedTaskIds: [], isConfirmationModalVisible: false});
+  }
+
+  private openConfirmationModal() {
+    this.setState({isConfirmationModalVisible: true});
+  };
+
+  private closeConfirmationModal() {
+    this.setState({isConfirmationModalVisible: false});
+  };
 }

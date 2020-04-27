@@ -1,11 +1,11 @@
 export class TaskFilters {
-  public sortBy: "title" | "description" | "created";
+  public sortBy: "title" | "description" | "created" | "dueDate";
   public direction: "desc" | "asc"
   public filterText: string;
 
   constructor() {
-    this.sortBy = "title";
-    this.direction = "desc";
+    this.sortBy = "dueDate";
+    this.direction = "asc";
     this.filterText = "";
   }
 }

@@ -24,4 +24,3 @@ export const authenticationReducer = (state: IAuthenticationState = initialState
       return state;
   }
 };
-// todo remove reducer

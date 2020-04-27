@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, CircularProgress, createMuiTheme, ThemeProvider} from "@material-ui/core";
+import {CircularProgress, ThemeProvider} from "@material-ui/core";
 import TransitionsModal from "../../components/modal/modal.component";
 import {AddEditFormComponent} from "../../components/task-list/add-edit-task/add-edit-form.component";
 import {connect} from "react-redux";
@@ -15,13 +15,13 @@ import {TaskListComponent} from "../../components/task-list/task-list.components
 import {TaskFilters} from "../../models/task-filters";
 import {changeRouteAction} from "../../store/routing/routing.actions";
 import {RouteInfo} from "../../constants/routes";
-import {TaskFilterComponent} from "../../components/task-list/task-filter/task-filter.component";
 import {ArrowBack} from "@material-ui/icons";
+import {darkTheme} from "../../constants/themes";
 
 interface IProps {
   activeFilters: TaskFilters;
   taskList: ITask[];
-  onAddTask: (task: ITask) => void;
+  onAddTask: (task: ITask, successCallback: () => void) => void;
   onFetchTasks: (filters: TaskFilters) => void;
   toggleComplete: (task: ITask) => void;
   onDeleteTasks: (taskIds: string[]) => void;
@@ -37,21 +37,20 @@ interface IState {
 
 class TaskListPageInner extends React.Component<IProps> {
 
+  constructor(props: IProps) {
+    super(props);
+    this.closeModal = this.closeModal.bind(this)
+  }
   public state: IState = {
     isAddNewTaskModalOpen: false
   }
 
-  private darkTheme = createMuiTheme({
-    palette: {
-      type: "dark"
-    },
-  });
 
   render() {
     const {completedTasks, toDoTasks} = this.divideTasksByCompletion();
     return (
-        <ThemeProvider theme={this.darkTheme}>
-          <header><ArrowBack onClick={() => this.props.goHome()}/></header>
+        <ThemeProvider theme={darkTheme}>
+          <header><ArrowBack style={{cursor: 'pointer'}} onClick={() => this.props.goHome()}/></header>
           <div className="task-list-container">
             {this.props.isLoading &&
             <div className="loader"><CircularProgress color="inherit"/></div>}
@@ -61,7 +60,7 @@ class TaskListPageInner extends React.Component<IProps> {
 
               <AddEditFormComponent
                   isNew={true}
-                  saveChanges={this.props.onAddTask}
+                  saveChanges={(task: ITask) => this.props.onAddTask(task, this.closeModal)}
                   closeForm={() => this.closeModal()}/>
             </TransitionsModal>
             <TaskListComponent
@@ -104,8 +103,8 @@ const mapState = (state: IAppState) => ({
 
 const mapDispatch = (dispatch: any) => ({
   goHome: () => dispatch(changeRouteAction({routeInfo: RouteInfo.landing()})),
-  toggleComplete: (task: ITask) => dispatch(updateTaskAction({...task, isCompleted: !task.isCompleted})),
-  onAddTask: (task: ITask) => dispatch(addTaskAction(task)),
+  toggleComplete: (task: ITask) => dispatch(updateTaskAction({...task, isCompleted: !task.isCompleted}, () => {return;})),
+  onAddTask: (task: ITask, successCallback: () => void) => dispatch(addTaskAction(task, successCallback)),
   onChangeTaskFilters: (field: keyof TaskFilters, value: any) => dispatch(changeTaskFilters({field, value})),
   onDeleteTasks: (taskIds: string[]) => dispatch(deleteTasksAction(taskIds)),
   onViewTaskDetails: (taskId: string) => dispatch(changeRouteAction({

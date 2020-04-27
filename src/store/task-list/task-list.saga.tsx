@@ -1,12 +1,14 @@
-import {call, put, takeLatest, all, select} from "redux-saga/effects";
+import {all, call, put, select, takeLatest} from "redux-saga/effects";
 import * as actionTypes from "./task-list.action-types";
 import * as service from "./task-list.service";
 import firebase from "firebase";
 import {
   addTaskSuccessAction,
   fetchTaskDetailsSuccessAction,
-  fetchTaskListAction,
-  fetchTaskListSuccessAction
+  fetchTaskListSuccessAction,
+  IDeleteTaskActionPayload,
+  IUpdateTaskActionPayload,
+  updateTaskSuccessAction
 } from "./task-list.actions";
 import {IAction} from "../../models/action";
 import {ITask} from "../../models/task";
@@ -18,7 +20,6 @@ import {toastrErrorOptions, toastrSuccessOptions} from "../../constants/toastr-o
 export function* fetchTaskListSaga() {
   try {
     const currentFilters: TaskFilters = yield select((state: IAppState) => state.taskList.taskListActiveFilters);
-    const auth =firebase.auth();
     const userId =firebase.auth().currentUser!.uid;
     const tasks = yield call(service.fetchTasksByUid, userId, currentFilters);
 
@@ -29,45 +30,51 @@ export function* fetchTaskListSaga() {
 
 }
 
-export function* addTaskSaga(action: IAction<ITask>) {
+export function* addTaskSaga(action: IAction<IUpdateTaskActionPayload>) {
   try {
     const userId =firebase.auth().currentUser!.uid;
-    const task: ITask = {...action.payload, created: new Date().getTime(), isCompleted: false};
+    const task: ITask = {...action.payload.task, created: new Date().getTime(), isCompleted: false};
     yield call(service.addTask, userId, task);
 
     yield put(addTaskSuccessAction());
-    yield put(toastrActions.add(toastrSuccessOptions("Task added")));
 
+    action.payload.successCallback();
+    yield put(toastrActions.add(toastrSuccessOptions("Task added")));
     yield call (fetchTaskListSaga);
+    yield put(addTaskSuccessAction());
   } catch(error) {
     yield put(toastrActions.add(toastrErrorOptions(error)))
   }
 }
 
-export function* updateTaskSaga(action: IAction<ITask>) {
+export function* updateTaskSaga(action: IAction<IUpdateTaskActionPayload>) {
   try {
     const userId =firebase.auth().currentUser!.uid;
-    const task: ITask = action.payload;
+    const task: ITask = action.payload.task;
 
     yield call(service.updateTask, userId, task);
     yield put(toastrActions.add(toastrSuccessOptions("Task successfully updated")));
-
+    action.payload.successCallback();
     yield call (fetchTaskListSaga);
+    yield put(updateTaskSuccessAction(task));
   } catch(error) {
     yield put(toastrActions.add(toastrErrorOptions(error)))
   }
 }
 
-export function* deleteTaskSaga(action: IAction<string[]>) {
+export function* deleteTaskSaga(action: IAction<IDeleteTaskActionPayload>) {
   try {
     const userId =firebase.auth().currentUser!.uid;
-    const ids = action.payload;
+    const ids = action.payload.taskIds;
     const calls: any[] = [];
     ids.forEach((id: string) => {
       calls.push(call(service.deleteTask, userId, id))
     })
     yield all(calls);
     yield call (fetchTaskListSaga);
+    if(action.payload.successCallback) {
+      action.payload.successCallback();
+    }
     yield put(toastrActions.add(toastrSuccessOptions("Task(s) successfully deleted")));
   } catch(error) {
     yield put(toastrActions.add(toastrErrorOptions(error)))

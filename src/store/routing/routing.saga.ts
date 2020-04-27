@@ -1,16 +1,15 @@
 import {LOCATION_CHANGE, LocationChangePayload, push, replace} from "connected-react-router";
 import {IRouteInfo} from "../../models/route";
-import {takeLatest} from "@redux-saga/core/effects";
+import {select, takeLatest} from "@redux-saga/core/effects";
 import * as actionTypes from "./routing.action-types";
 import {IAction} from "../../models/action";
 import {call, put} from "redux-saga/effects";
-import {LANDING, RouteInfo, TASKS} from "../../constants/routes";
+import {LANDING, RouteInfo, TASK_DETAILS, TASKS} from "../../constants/routes";
 import firebase from "firebase";
 import {changeRouteAction} from "./routing.actions";
 import {LOG_IN_ERROR} from "../authentication/authentication.action-types";
 import {fetchTaskListSaga} from "../task-list/task-list.saga";
-import {TaskFilters} from "../../models/task-filters";
-import {fetchTaskListAction} from "../task-list/task-list.actions";
+import {IAppState} from "../../app-state";
 
 export interface IChangeRoutePayload {
   routeInfo: IRouteInfo;
@@ -36,9 +35,11 @@ export function* changeRouteSaga(action: IAction<IChangeRoutePayload>) {
 
 export function* routeInitSaga(action: IAction<LocationChangePayload>){
   try {
+    console.log('route saga', action.payload.location.pathname);
     if(action.payload.isFirstRendering) {
       switch(action.payload.location.pathname) {
         case TASKS: {
+          console.log('task route');
           const isLoggedIn = firebase.auth().currentUser?.uid;
           if (!isLoggedIn) {
             yield put(changeRouteAction({routeInfo: RouteInfo.landing()}))
@@ -46,7 +47,18 @@ export function* routeInitSaga(action: IAction<LocationChangePayload>){
             yield call(fetchTaskListSaga)
           }
         }
+        break;
+        case TASK_DETAILS: {
+          console.log('task details route');
+          const isLoggedIn = firebase.auth().currentUser?.uid;
+          const currentTask = yield select((state: IAppState) => state.taskList.currentTask);
+          if (!isLoggedIn || currentTask) {
+            yield put(changeRouteAction({routeInfo: RouteInfo.landing()}))
+          }
+        }
+        break;
         case LANDING: {
+          console.log('ladngin route');
           const isLoggedIn = firebase.auth().currentUser?.uid;
           if (isLoggedIn) {
             yield put(changeRouteAction({routeInfo: RouteInfo.taskList()}))

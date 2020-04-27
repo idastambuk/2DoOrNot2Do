@@ -1,12 +1,13 @@
 @import './assets/styles/vars';
 @import './assets/styles/general';
-@import 'react-redux-toastr/src/styles/index';
+@import '~react-redux-toastr/src/styles';
 @import './components/task-list/task/task';
 @import './components/login/login';
 @import './components/task-list/task-filter/task-filter';
 @import './components/task-list/task-list';
 @import './components/task-list/add-edit-task/add-edit-form';
 @import './components/task-list/task-details/task-details';
+
 .App {
   text-align: center;
 }
@@ -25,7 +26,7 @@
 #root {
   min-height: 100vh;
   position: relative;
-  background-color: $theme-background;
+  background: $theme-background;
 }
 * {
   color: $theme-primary;

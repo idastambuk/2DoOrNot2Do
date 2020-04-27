@@ -1,8 +1,9 @@
-import React from 'react';
-import {makeStyles, Theme, createStyles, ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import React, {ReactElement} from 'react';
+import {createStyles, makeStyles, Theme, ThemeProvider} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import {lightTheme} from "../../constants/themes";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,18 +22,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
+  children: ReactElement[]|ReactElement;
   isOpen: boolean;
   onClose: () => void;
+  optionalClass?: string
 }
 
-export default function TransitionsModal(props: any) {
+export default function TransitionsModal(props: IProps) {
   const classes = useStyles();
   const {isOpen} = props;
-  const lightTheme = createMuiTheme({
-    palette: {
-      type: "light"
-    },
-  });
 
   return (
       <div>
@@ -40,7 +38,7 @@ export default function TransitionsModal(props: any) {
           <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
-              className={classes.modal}
+              className={classes.modal + ` ${props.optionalClass}`}
               open={isOpen}
               onClose={props.onClose}
               closeAfterTransition

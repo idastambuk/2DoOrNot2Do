@@ -14,8 +14,8 @@ export const TaskDetailsComponent = (props: IProps) => {
   return (
       <div className="task-details-container">
         <div className="actions">
-          <Edit onClick={props.onEditTask}/>
-          <Delete onClick={props.onDeleteTask}/>
+          <Edit style={{cursor: 'pointer'}} onClick={props.onEditTask}/>
+          <Delete style={{cursor: 'pointer'}} onClick={props.onDeleteTask}/>
         </div>
         <div className="task-details">
           <h5 className="title">{task.title}</h5>

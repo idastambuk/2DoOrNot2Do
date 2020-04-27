@@ -25,7 +25,6 @@ const rrfProps = {
   dispatch: store.dispatch,
 }
 
-// todo lock packages
 function App() {
   return (
         <Provider store={store}>
