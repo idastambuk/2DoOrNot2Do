@@ -8,7 +8,7 @@ ToDos in the project:
 2. Tests
 3. Drag&drop functionality for tasks, instead of button to complete/uncomplete
 4. Tooltips for buttons
-5. API, one day, hopefully.
+5. API
 
 etc.
 
